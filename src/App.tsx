@@ -1,26 +1,22 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { useState } from 'react';
+import Block1Plan from './Block1Plan';
+import MarathonSkeleton from './MarathonSkeleton';
 
-function App() {
+export default function App() {
+  const [view, setView] = useState<'block1'|'skeleton'>('block1');
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <div style={{display:'flex',background:'#000',padding:'10px 20px',gap:10,position:'sticky',top:0,zIndex:100}}>
+        <button onClick={()=>setView('block1')}
+          style={{flex:1,padding:'10px',borderRadius:8,border:'none',background:view==='block1'?'#fa5400':'#1c1c1e',color:'#fff',fontSize:13,fontWeight:700,cursor:'pointer'}}>
+          Weeks 1–4
+        </button>
+        <button onClick={()=>setView('skeleton')}
+          style={{flex:1,padding:'10px',borderRadius:8,border:'none',background:view==='skeleton'?'#fa5400':'#1c1c1e',color:'#fff',fontSize:13,fontWeight:700,cursor:'pointer'}}>
+          Full 16 Weeks
+        </button>
+      </div>
+      {view==='block1' ? <Block1Plan /> : <MarathonSkeleton />}
     </div>
   );
 }
-
-export default App;
