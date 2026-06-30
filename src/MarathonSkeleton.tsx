@@ -225,8 +225,10 @@ export default function MarathonSkeleton() {
     if(!loaded) return;
     setSaving("saving");
     if(timer.current) clearTimeout(timer.current);
-    timer.current=setTimeout(async()=>{ try{await save({completed,km,notes});setSaving("saved");}catch{setSaving("err");} },600);
-    return()=>{ if(timer.current) clearTimeout(timer.current); };
+    const snapshot = {completed,km,notes};
+    timer.current=setTimeout(()=>{
+      save(snapshot).then(()=>setSaving("saved")).catch(()=>setSaving("err"));
+    },600);
   },[completed,km,notes,loaded]);
 
   const week = WEEKS.find(w=>w.id===activeW)!;
@@ -249,7 +251,10 @@ export default function MarathonSkeleton() {
   const check=(id:string,plannedKm:number|null)=>{
     setCompleted(p=>{
       const n={...p,[id]:!p[id]};
-      if(n[id]&&plannedKm!==null&&km[id]===undefined) setKm(k=>({...k,[id]:plannedKm}));
+      const newKm = (n[id]&&plannedKm!==null&&km[id]===undefined) ? {...km,[id]:plannedKm} : km;
+      if (newKm !== km) setKm(newKm);
+      setSaving("saving");
+      save({completed:n,km:newKm,notes}).then(()=>setSaving("saved")).catch(()=>setSaving("err"));
       return n;
     });
   };

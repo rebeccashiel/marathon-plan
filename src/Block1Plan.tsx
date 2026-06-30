@@ -331,12 +331,36 @@ export default function Block1Plan() {
     if (!loaded) return;
     setSaving("saving");
     if (timer.current) clearTimeout(timer.current);
-    timer.current = setTimeout(async () => {
-      try { await saveData({ completed, km, notes }); setSaving("saved"); }
-      catch { setSaving("err"); }
+    // Capture the values at the moment the timer is set, not the moment it fires.
+    const snapshot = { completed, km, notes };
+    timer.current = setTimeout(() => {
+      saveData(snapshot)
+        .then(() => setSaving("saved"))
+        .catch(() => setSaving("err"));
     }, 600);
-    return () => { if (timer.current) clearTimeout(timer.current); };
+    // No cleanup-based clearTimeout here — clearing only happens at the
+    // top of the next effect run via timer.current, never on unmount/rerender
+    // alone. This prevents the timer being cancelled before it can fire.
   }, [completed, km, notes, loaded]);
+
+  // Belt-and-braces: also save immediately (no debounce) right before the
+  // tab/window is closed or hidden, so a quick tick-then-close never loses data.
+  useEffect(() => {
+    const flush = () => {
+      if (timer.current) {
+        clearTimeout(timer.current);
+        // fire and forget — best effort on unload
+        saveData({ completed, km, notes }).catch(() => {});
+      }
+    };
+    document.addEventListener("visibilitychange", () => {
+      if (document.visibilityState === "hidden") flush();
+    });
+    window.addEventListener("pagehide", flush);
+    return () => {
+      window.removeEventListener("pagehide", flush);
+    };
+  }, [completed, km, notes]);
 
   const week = WEEKS.find(w => w.id === activeW)!;
 
@@ -354,7 +378,16 @@ export default function Block1Plan() {
   const check = (id: string, plannedKm: number|null) => {
     setCompleted(p => {
       const n = { ...p, [id]: !p[id] };
-      if (n[id] && plannedKm !== null && km[id] === undefined) setKm(k => ({ ...k, [id]: plannedKm }));
+      const newKm = (n[id] && plannedKm !== null && km[id] === undefined)
+        ? { ...km, [id]: plannedKm }
+        : km;
+      if (newKm !== km) setKm(newKm);
+      // Direct, immediate save (no debounce wait) as a robust backup —
+      // does not depend on the debounced useEffect timer surviving.
+      setSaving("saving");
+      saveData({ completed: n, km: newKm, notes })
+        .then(() => setSaving("saved"))
+        .catch(() => setSaving("err"));
       return n;
     });
   };
