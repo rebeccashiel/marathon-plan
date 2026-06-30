@@ -1,14 +1,44 @@
 import { useState, useEffect, useRef, useMemo } from "react";
+import { supabase } from "./supabase";
 
-const SK = "nrc-block1-v2";
+const USER_ID = "default_user";
 interface Prog { completed: Record<string,boolean>; km: Record<string,number>; notes: Record<string,string>; }
+
 async function loadData(): Promise<Prog|null> {
-  try { if (!window.storage) return null; const r = await window.storage.get(SK, false); return r ? JSON.parse(r.value) : null; } catch { return null; }
+  try {
+    const { data, error } = await supabase
+      .from("progress")
+      .select("completed, km_logged, notes")
+      .eq("user_id", USER_ID)
+      .single();
+    if (error || !data) return null;
+    return {
+      completed: data.completed || {},
+      km: data.km_logged || {},
+      notes: data.notes || {},
+    };
+  } catch {
+    return null;
+  }
 }
+
 async function saveData(d: Prog) {
-  try { if (window.storage) await window.storage.set(SK, JSON.stringify(d), false); } catch {}
+  try {
+    const { error } = await supabase
+      .from("progress")
+      .upsert({
+        user_id: USER_ID,
+        completed: d.completed,
+        km_logged: d.km,
+        notes: d.notes,
+        updated_at: new Date().toISOString(),
+      });
+    if (error) throw error;
+  } catch {
+    // swallow — UI shows "save failed" via saving state
+    throw new Error("save failed");
+  }
 }
-declare global { interface Window { storage?: { get: (k: string, s?: boolean) => Promise<{value: string}|null>; set: (k: string, v: string, s?: boolean) => Promise<any>; }; } }
 
 type Tag = "easy"|"quality"|"long"|"rest"|"gym"|"shake";
 
