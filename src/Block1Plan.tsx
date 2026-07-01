@@ -312,8 +312,9 @@ export default function Block1Plan() {
   const [editKm, setEditKm] = useState<string|null>(null);
   const [editNote, setEditNote] = useState<string|null>(null);
   const [loaded, setLoaded] = useState(false);
-  const [saving, setSaving] = useState<"idle"|"saving"|"saved"|"err">("idle");
-  const timer = useRef<ReturnType<typeof setTimeout>|null>(null);
+  const [dirty, setDirty] = useState(false); // true = unsaved changes exist
+  const [saveStatus, setSaveStatus] = useState<"idle"|"saving"|"saved"|"err">("idle");
+  const [saveError, setSaveError] = useState<string>("");
 
   useEffect(() => {
     (async () => {
@@ -327,40 +328,21 @@ export default function Block1Plan() {
     })();
   }, []);
 
-  useEffect(() => {
-    if (!loaded) return;
-    setSaving("saving");
-    if (timer.current) clearTimeout(timer.current);
-    // Capture the values at the moment the timer is set, not the moment it fires.
-    const snapshot = { completed, km, notes };
-    timer.current = setTimeout(() => {
-      saveData(snapshot)
-        .then(() => setSaving("saved"))
-        .catch(() => setSaving("err"));
-    }, 600);
-    // No cleanup-based clearTimeout here — clearing only happens at the
-    // top of the next effect run via timer.current, never on unmount/rerender
-    // alone. This prevents the timer being cancelled before it can fire.
-  }, [completed, km, notes, loaded]);
-
-  // Belt-and-braces: also save immediately (no debounce) right before the
-  // tab/window is closed or hidden, so a quick tick-then-close never loses data.
-  useEffect(() => {
-    const flush = () => {
-      if (timer.current) {
-        clearTimeout(timer.current);
-        // fire and forget — best effort on unload
-        saveData({ completed, km, notes }).catch(() => {});
-      }
-    };
-    document.addEventListener("visibilitychange", () => {
-      if (document.visibilityState === "hidden") flush();
-    });
-    window.addEventListener("pagehide", flush);
-    return () => {
-      window.removeEventListener("pagehide", flush);
-    };
-  }, [completed, km, notes]);
+  // Manual save — triggered only by the explicit Save button. No timers,
+  // no effects, no auto-trigger. This is the ONLY path that writes to Supabase.
+  const doSave = async () => {
+    setSaveStatus("saving");
+    setSaveError("");
+    try {
+      await saveData({ completed, km, notes });
+      setSaveStatus("saved");
+      setDirty(false);
+      setTimeout(() => setSaveStatus("idle"), 2500);
+    } catch (e: any) {
+      setSaveStatus("err");
+      setSaveError(e?.message || String(e) || "Unknown error");
+    }
+  };
 
   const week = WEEKS.find(w => w.id === activeW)!;
 
@@ -378,18 +360,12 @@ export default function Block1Plan() {
   const check = (id: string, plannedKm: number|null) => {
     setCompleted(p => {
       const n = { ...p, [id]: !p[id] };
-      const newKm = (n[id] && plannedKm !== null && km[id] === undefined)
-        ? { ...km, [id]: plannedKm }
-        : km;
-      if (newKm !== km) setKm(newKm);
-      // Direct, immediate save (no debounce wait) as a robust backup —
-      // does not depend on the debounced useEffect timer surviving.
-      setSaving("saving");
-      saveData({ completed: n, km: newKm, notes })
-        .then(() => setSaving("saved"))
-        .catch(() => setSaving("err"));
+      if (n[id] && plannedKm !== null && km[id] === undefined) {
+        setKm(k => ({ ...k, [id]: plannedKm }));
+      }
       return n;
     });
+    setDirty(true);
   };
 
   const wColor = week.isDeload ? "#636366" : "#fa5400";
@@ -418,7 +394,7 @@ export default function Block1Plan() {
       {/* STICKY HEADER */}
       <div style={{ background: "#111", borderBottom: "1px solid #1c1c1e", padding: "18px 20px 0", position: "sticky", top: 0, zIndex: 50 }}>
         <div style={{ maxWidth: 640, margin: "0 auto" }}>
-          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 14 }}>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 12 }}>
             <div>
               <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: 2.5, color: "#fa5400", textTransform: "uppercase", marginBottom: 5 }}>
                 Base Phase · Weeks 1–4
@@ -428,13 +404,33 @@ export default function Block1Plan() {
               </div>
             </div>
             <div style={{ textAlign: "right" }}>
-              <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: 1.5, color: saving === "err" ? "#ff453a" : "#48484a", textTransform: "uppercase", marginBottom: 4 }}>
-                {!loaded ? "Loading…" : saving === "saving" ? "Saving…" : saving === "err" ? "Save failed" : "Saved ✓"}
-              </div>
               <div style={{ fontSize: 14, fontWeight: 800, color: "#30d158", letterSpacing: -0.3 }}>{totalKm}km</div>
               <div style={{ fontSize: 10, color: "#48484a", marginTop: 2 }}>{totalDone}/{totalSessions} sessions</div>
             </div>
           </div>
+
+          {/* SAVE BUTTON — the ONLY thing that writes to the database */}
+          <button onClick={doSave} disabled={!loaded || saveStatus === "saving"}
+            style={{
+              width: "100%", padding: "13px", borderRadius: 10, marginBottom: 14,
+              background: saveStatus === "err" ? "#3a0a00" : dirty ? "#fa5400" : "#1c1c1e",
+              border: saveStatus === "err" ? "1.5px solid #ff453a" : dirty ? "none" : "1px solid #2c2c2e",
+              color: saveStatus === "err" ? "#ff8070" : dirty ? "#fff" : "#666",
+              fontSize: 14, fontWeight: 800, letterSpacing: 0.5,
+              cursor: (!loaded || saveStatus === "saving") ? "wait" : "pointer",
+              display: "flex", alignItems: "center", justifyContent: "center", gap: 8,
+            }}>
+            {!loaded ? "LOADING…" :
+             saveStatus === "saving" ? "SAVING…" :
+             saveStatus === "err" ? `⚠ SAVE FAILED — TAP TO RETRY` :
+             saveStatus === "saved" ? "✓ SAVED" :
+             dirty ? "SAVE CHANGES" : "ALL SAVED — NOTHING TO SAVE"}
+          </button>
+          {saveStatus === "err" && saveError && (
+            <div style={{ marginTop: -8, marginBottom: 12, fontSize: 11, color: "#ff8070", background: "#2a0a05", padding: "8px 10px", borderRadius: 6 }}>
+              Error detail: {saveError}
+            </div>
+          )}
 
           {/* WEEK TABS */}
           <div style={{ display: "flex", gap: 6, paddingBottom: 14 }}>
@@ -533,7 +529,7 @@ export default function Block1Plan() {
                     {s.km !== null ? (
                       isDone && editKm === s.id ? (
                         <input type="number" step=".1" autoFocus defaultValue={km[s.id] ?? s.km}
-                          onBlur={e => { const v = parseFloat(e.target.value); setKm(k => ({ ...k, [s.id]: isNaN(v) ? s.km! : v })); setEditKm(null); }}
+                          onBlur={e => { const v = parseFloat(e.target.value); setKm(k => ({ ...k, [s.id]: isNaN(v) ? s.km! : v })); setEditKm(null); setDirty(true); }}
                           onKeyDown={e => { if (e.key === "Enter") (e.target as HTMLInputElement).blur(); }}
                           style={{ width: 52, fontSize: 17, fontWeight: 800, textAlign: "right", background: "transparent", border: "none", borderBottom: `1px solid ${meta.color}`, color: "#fff", outline: "none", letterSpacing: -0.5 }} />
                       ) : (
@@ -606,7 +602,7 @@ export default function Block1Plan() {
                       <div style={{ fontSize: 9, fontWeight: 700, letterSpacing: 2, color: "#48484a", textTransform: "uppercase", marginBottom: 8 }}>Session Note</div>
                       {editNote === s.id ? (
                         <textarea autoFocus defaultValue={notes[s.id] || ""} placeholder="How did it go? HR, pace, how you felt…"
-                          onBlur={e => { setNotes(n => ({ ...n, [s.id]: e.target.value.trim() })); setEditNote(null); }}
+                          onBlur={e => { setNotes(n => ({ ...n, [s.id]: e.target.value.trim() })); setEditNote(null); setDirty(true); }}
                           style={{ width: "100%", minHeight: 68, fontSize: 13, background: "#111", border: "1px solid #2c2c2e", borderRadius: 8, color: "#aeaeb2", outline: "none", resize: "vertical", lineHeight: 1.65, padding: "10px 12px" }} />
                       ) : (
                         <div onClick={() => setEditNote(s.id)} style={{ cursor: "text", fontSize: 13, color: notes[s.id] ? "#aeaeb2" : "#3a3a3c", fontStyle: notes[s.id] ? "normal" : "italic", lineHeight: 1.65, minHeight: 24 }}>
