@@ -409,28 +409,20 @@ export default function Block1Plan() {
             </div>
           </div>
 
-          {/* SAVE BUTTON — the ONLY thing that writes to the database */}
-          <button onClick={doSave} disabled={!loaded || saveStatus === "saving"}
+          {/* SAVE BUTTON */}
+          <button onClick={doSave}
             style={{
               width: "100%", padding: "13px", borderRadius: 10, marginBottom: 14,
-              background: saveStatus === "err" ? "#3a0a00" : dirty ? "#fa5400" : "#1c1c1e",
-              border: saveStatus === "err" ? "1.5px solid #ff453a" : dirty ? "none" : "1px solid #2c2c2e",
-              color: saveStatus === "err" ? "#ff8070" : dirty ? "#fff" : "#666",
+              background: saveStatus === "err" ? "#ff453a" : saveStatus === "saved" ? "#30d158" : "#fa5400",
+              border: "none", color: "#fff",
               fontSize: 14, fontWeight: 800, letterSpacing: 0.5,
-              cursor: (!loaded || saveStatus === "saving") ? "wait" : "pointer",
-              display: "flex", alignItems: "center", justifyContent: "center", gap: 8,
+              cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center",
             }}>
-            {!loaded ? "LOADING…" :
-             saveStatus === "saving" ? "SAVING…" :
-             saveStatus === "err" ? `⚠ SAVE FAILED — TAP TO RETRY` :
+            {saveStatus === "saving" ? "SAVING…" :
+             saveStatus === "err" ? "⚠ SAVE FAILED — TAP TO RETRY" :
              saveStatus === "saved" ? "✓ SAVED" :
-             dirty ? "SAVE CHANGES" : "ALL SAVED — NOTHING TO SAVE"}
+             "SAVE CHANGES"}
           </button>
-          {saveStatus === "err" && saveError && (
-            <div style={{ marginTop: -8, marginBottom: 12, fontSize: 11, color: "#ff8070", background: "#2a0a05", padding: "8px 10px", borderRadius: 6 }}>
-              Error detail: {saveError}
-            </div>
-          )}
 
           {/* WEEK TABS */}
           <div style={{ display: "flex", gap: 6, paddingBottom: 14 }}>
