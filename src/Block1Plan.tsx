@@ -322,7 +322,6 @@ export default function Block1Plan() {
         setKm(p => ({ ...p, ...s.km }));
         setNotes(p => ({ ...p, ...s.notes }));
       }
-      // loaded;
     })();
   }, []);
 
@@ -363,7 +362,6 @@ export default function Block1Plan() {
       }
       return n;
     });
-    // dirty;
   };
 
   const wColor = week.isDeload ? "#636366" : "#fa5400";
@@ -519,7 +517,6 @@ export default function Block1Plan() {
                     {s.km !== null ? (
                       isDone && editKm === s.id ? (
                         <input type="number" step=".1" autoFocus defaultValue={km[s.id] ?? s.km}
-                          onBlur={e => { const v = parseFloat(e.target.value); setKm(k => ({ ...k, [s.id]: isNaN(v) ? s.km! : v })); setEditKm(null); // dirty; }}
                           onKeyDown={e => { if (e.key === "Enter") (e.target as HTMLInputElement).blur(); }}
                           style={{ width: 52, fontSize: 17, fontWeight: 800, textAlign: "right", background: "transparent", border: "none", borderBottom: `1px solid ${meta.color}`, color: "#fff", outline: "none", letterSpacing: -0.5 }} />
                       ) : (
@@ -592,7 +589,6 @@ export default function Block1Plan() {
                       <div style={{ fontSize: 9, fontWeight: 700, letterSpacing: 2, color: "#48484a", textTransform: "uppercase", marginBottom: 8 }}>Session Note</div>
                       {editNote === s.id ? (
                         <textarea autoFocus defaultValue={notes[s.id] || ""} placeholder="How did it go? HR, pace, how you felt…"
-                          onBlur={e => { setNotes(n => ({ ...n, [s.id]: e.target.value.trim() })); setEditNote(null); // dirty; }}
                           style={{ width: "100%", minHeight: 68, fontSize: 13, background: "#111", border: "1px solid #2c2c2e", borderRadius: 8, color: "#aeaeb2", outline: "none", resize: "vertical", lineHeight: 1.65, padding: "10px 12px" }} />
                       ) : (
                         <div onClick={() => setEditNote(s.id)} style={{ cursor: "text", fontSize: 13, color: notes[s.id] ? "#aeaeb2" : "#3a3a3c", fontStyle: notes[s.id] ? "normal" : "italic", lineHeight: 1.65, minHeight: 24 }}>
