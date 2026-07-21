@@ -1,5 +1,5 @@
 // eslint-disable @typescript-eslint/no-unused-vars
-import { useState, useEffect, useRef, useMemo } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { supabase } from "./supabase";
 
 const USER_ID = "default_user";
@@ -312,10 +312,9 @@ export default function Block1Plan() {
   const [notes, setNotes] = useState<Record<string,string>>({});
   const [editKm, setEditKm] = useState<string|null>(null);
   const [editNote, setEditNote] = useState<string|null>(null);
-  const [loaded, setLoaded] = useState(false);
-  const [dirty, setDirty] = useState(false); // true = unsaved changes exist
+  const [_loaded, setLoaded] = useState(false);
+  const [_dirty, setDirty] = useState(false); // true = unsaved changes exist
   const [saveStatus, setSaveStatus] = useState<"idle"|"saving"|"saved"|"err">("idle");
-  const [saveError, setSaveError] = useState<string>("");
 
   useEffect(() => {
     (async () => {
@@ -333,7 +332,7 @@ export default function Block1Plan() {
   // no effects, no auto-trigger. This is the ONLY path that writes to Supabase.
   const doSave = async () => {
     setSaveStatus("saving");
-    setSaveError("");
+    
     try {
       await saveData({ completed, km, notes });
       setSaveStatus("saved");
@@ -341,7 +340,7 @@ export default function Block1Plan() {
       setTimeout(() => setSaveStatus("idle"), 2500);
     } catch (e: any) {
       setSaveStatus("err");
-      setSaveError(e?.message || String(e) || "Unknown error");
+      
     }
   };
 

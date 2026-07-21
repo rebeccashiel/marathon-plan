@@ -292,9 +292,9 @@ export default function Block2Plan() {
   const [notes, setNotes] = useState<Record<string,string>>({});
   const [editKm, setEditKm] = useState<string|null>(null);
   const [editNote, setEditNote] = useState<string|null>(null);
-  const [loaded, setLoaded] = useState(false);
+  const [_loaded, setLoaded] = useState(false);
   const [saveStatus, setSaveStatus] = useState<"idle"|"saving"|"saved"|"err">("idle");
-  const [dirty, setDirty] = useState(false);
+  const [_dirty, setDirty] = useState(false);
 
   useEffect(() => {
     (async () => {
