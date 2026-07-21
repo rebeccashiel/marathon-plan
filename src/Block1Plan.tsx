@@ -333,7 +333,7 @@ export default function Block1Plan() {
     try {
       await saveData({ completed, km, notes });
       setSaveStatus("saved");
-      setDirty(false);
+      
       setTimeout(() => setSaveStatus("idle"), 2500);
     } catch (e: any) {
       setSaveStatus("err");

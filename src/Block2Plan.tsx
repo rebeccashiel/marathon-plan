@@ -303,7 +303,7 @@ export default function Block2Plan() {
 
   const doSave = async () => {
     setSaveStatus("saving");
-    try { await saveData({ completed, km, notes }); setSaveStatus("saved"); setDirty(false); setTimeout(()=>setSaveStatus("idle"), 2500); }
+    try { await saveData({ completed, km, notes }); setSaveStatus("saved");  setTimeout(()=>setSaveStatus("idle"), 2500); }
     catch { setSaveStatus("err"); }
   };
 
@@ -326,7 +326,7 @@ export default function Block2Plan() {
       if (n[id] && plannedKm !== null && km[id] === undefined) setKm(k=>({...k,[id]:plannedKm}));
       return n;
     });
-    setDirty(true);
+    
   };
 
   const wColor = week.isDeload ? "#636366" : "#0a84ff";
@@ -458,7 +458,7 @@ export default function Block2Plan() {
                     {s.km!==null?(
                       isDone&&editKm===s.id?(
                         <input type="number" step=".1" autoFocus defaultValue={km[s.id]??s.km}
-                          onBlur={e=>{const v=parseFloat(e.target.value);setKm(k=>({...k,[s.id]:isNaN(v)?s.km!:v}));setEditKm(null);setDirty(true);}}
+                          onBlur={e=>{const v=parseFloat(e.target.value);setKm(k=>({...k,[s.id]:isNaN(v)?s.km!:v}));setEditKm(null);}}
                           onKeyDown={e=>{if(e.key==="Enter")(e.target as HTMLInputElement).blur();}}
                           style={{width:52,fontSize:16,fontWeight:800,textAlign:"right",background:"transparent",border:"none",borderBottom:`1px solid ${meta.color}`,color:"#fff",outline:"none",letterSpacing:-0.5}}/>
                       ):(
@@ -526,7 +526,7 @@ export default function Block2Plan() {
                       <div style={{fontSize:9,fontWeight:700,letterSpacing:2,color:"#48484a",textTransform:"uppercase",marginBottom:8}}>Session Note</div>
                       {editNote===s.id?(
                         <textarea autoFocus defaultValue={notes[s.id]||""} placeholder="How did it go? HR, pace, how you felt…"
-                          onBlur={e=>{setNotes(n=>({...n,[s.id]:e.target.value.trim()}));setEditNote(null);setDirty(true);}}
+                          onBlur={e=>{setNotes(n=>({...n,[s.id]:e.target.value.trim()}));setEditNote(null);}}
                           style={{width:"100%",minHeight:68,fontSize:13,background:"#111",border:"1px solid #2c2c2e",borderRadius:8,color:"#aeaeb2",outline:"none",resize:"vertical",lineHeight:1.65,padding:"10px 12px"}}/>
                       ):(
                         <div onClick={()=>setEditNote(s.id)} style={{cursor:"text",fontSize:13,color:notes[s.id]?"#aeaeb2":"#3a3a3c",fontStyle:notes[s.id]?"normal":"italic",lineHeight:1.65,minHeight:24}}>
