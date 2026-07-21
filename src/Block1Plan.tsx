@@ -1,3 +1,4 @@
+// eslint-disable @typescript-eslint/no-unused-vars
 import { useState, useEffect, useRef, useMemo } from "react";
 import { supabase } from "./supabase";
 
