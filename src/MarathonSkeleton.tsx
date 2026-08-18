@@ -109,32 +109,32 @@ const WEEKS: Wk[] = [
   ]},
   // ── BLOCK 3: RACE-SPECIFIC ───────────────────────────────────────────
   { id:"w9", n:9, dates:"24–30 Aug", phase:"Race-Specific", theme:"Marathon Specificity Begins", targetKm:68, sessions:[
-    { id:"w9-mon", day:"MON", tag:"easy", title:"Easy Z2 Run", km:11, detail:"Back fresh from deload. Volume stepping up into the race-specific phase.", paces:"6:20–7:00/km · ≤150bpm" },
+    { id:"w9-mon", day:"MON", tag:"easy", title:"Easy Z2 Run", km:9, detail:"Back fresh from deload. Volume stepping up into the race-specific phase.", paces:"6:20–7:00/km · ≤150bpm" },
     { id:"w9-tue", day:"TUE", tag:"quality", title:"Race-MP Intervals + Leg PT", km:11, detail:"Run first on fresh legs. 2km easy warm-up → 4×2km @ race-target MP with 2min jog recovery → 2km easy cool-down. This is the first session at actual goal race pace rather than training MP. The effort should feel controlled-hard, not maximal. Leg PT after.", paces:"Warm-up/CD: 6:30–7:00/km · Reps: 4:55–5:04/km · 160–167bpm" },
-    { id:"w9-wed", day:"WED", tag:"quality", title:"Continuous Tempo", km:10, detail:"After a proper warm-up, run 25 minutes continuous at threshold pace. Different stimulus from Tuesday's broken reps — sustained effort without recovery. Tests your ability to hold pace when fatigued.", paces:"4:42–4:52/km continuous · 168–174bpm" },
-    { id:"w9-thu", day:"THU", tag:"gym", title:"Run to PT — Upper + Core", km:8, detail:"Easy run to gym. Upper body and core PT only.", paces:"6:30–7:00/km easy" },
-    { id:"w9-fri", day:"FRI", tag:"shake", title:"Shakeout", km:5, detail:"Two quality sessions this week — keep Friday genuinely easy.", paces:"6:40–7:10/km · ≤145bpm" },
+    { id:"w9-wed", day:"WED", tag:"quality", title:"Continuous Tempo", km:8, detail:"After a proper warm-up, run 25 minutes continuous at threshold pace. Different stimulus from Tuesday's broken reps — sustained effort without recovery. Tests your ability to hold pace when fatigued.", paces:"4:42–4:52/km continuous · 168–174bpm" },
+    { id:"w9-thu", day:"THU", tag:"gym", title:"Run to PT — Upper + Core", km:7, detail:"Easy run to gym. Upper body and core PT only.", paces:"6:30–7:00/km easy" },
+    { id:"w9-fri", day:"FRI", tag:"shake", title:"Shakeout", km:4, detail:"Two quality sessions this week — keep Friday genuinely easy.", paces:"6:40–7:10/km · ≤145bpm" },
     { id:"w9-sat", day:"SAT", tag:"long", title:"Long Run + Extended MP — 29km", km:29, detail:"5km easy → 17km @ race-approaching MP → 7km easy. Getting serious. Custom watch workout essential. Fuel every 30–35min from 40min mark.", paces:"Easy: 6:20–6:50/km · MP: 5:00–5:10/km · 160–167bpm" },
     { id:"w9-sun", day:"SUN", tag:"rest", title:"Rest — Church", km:null, detail:"Rest day." },
   ]},
   { id:"w10", n:10, dates:"31 Aug–6 Sep", phase:"Race-Specific", theme:"Peak Volume Territory", targetKm:72, sessions:[
-    { id:"w10-mon", day:"MON", tag:"easy", title:"Easy Z2 Run", km:11, detail:"High volume week. Keep easy days genuinely easy — no tempo creep.", paces:"6:20–7:00/km · ≤150bpm" },
+    { id:"w10-mon", day:"MON", tag:"easy", title:"Easy Z2 Run", km:9, detail:"High volume week. Keep easy days genuinely easy — no tempo creep.", paces:"6:20–7:00/km · ≤150bpm" },
     { id:"w10-tue", day:"TUE", tag:"quality", title:"Progression Run + Leg PT", km:12, detail:"Run first on fresh legs. 10km structured progression: 3km easy warm-up → 3km @ training MP → 2km @ threshold → 2km @ 10K effort → finish. Teaches your body to run fast on accumulated fatigue — the most race-specific quality session in the plan. Leg PT after.", paces:"MP: 5:00–5:10/km · Threshold: 4:42–4:52/km · 10K: 4:25–4:38/km" },
-    { id:"w10-wed", day:"WED", tag:"quality", title:"Race-MP Intervals", km:11, detail:"After warm-up, run 5×1.5km @ race MP with 90sec jog recovery. Short reps allow you to stay controlled at goal pace without blowing up.", paces:"4:55–5:04/km · 160–167bpm" },
-    { id:"w10-thu", day:"THU", tag:"gym", title:"Run to PT — Upper + Core", km:8, detail:"Easy run to gym. Upper body and core PT only.", paces:"6:30–7:00/km easy" },
-    { id:"w10-fri", day:"FRI", tag:"shake", title:"Shakeout", km:5, detail:"Pre-long-run flush. Two quality sessions behind you.", paces:"6:40–7:10/km · ≤145bpm" },
+    { id:"w10-wed", day:"WED", tag:"quality", title:"Race-MP Intervals", km:10, detail:"After warm-up, run 5×1.5km @ race MP with 90sec jog recovery. Short reps allow you to stay controlled at goal pace without blowing up.", paces:"4:55–5:04/km · 160–167bpm" },
+    { id:"w10-thu", day:"THU", tag:"gym", title:"Run to PT — Upper + Core", km:7, detail:"Easy run to gym. Upper body and core PT only.", paces:"6:30–7:00/km easy" },
+    { id:"w10-fri", day:"FRI", tag:"shake", title:"Shakeout", km:4, detail:"Pre-long-run flush. Two quality sessions behind you.", paces:"6:40–7:10/km · ≤145bpm" },
     { id:"w10-sat", day:"SAT", tag:"long", title:"Long Run — 30km", km:30, detail:"5km easy → 20km @ goal MP → 5km easy. Longest MP block of the build. Custom watch workout essential. This should feel hard. That's correct. Fuel every 30–35min from 40min mark.", paces:"Easy: 6:20–6:50/km · MP: 4:58–5:08/km · 160–167bpm" },
     { id:"w10-sun", day:"SUN", tag:"rest", title:"Rest — Church", km:null, detail:"Rest day. Big week done." },
   ]},
   // ── GUN RUN WEEK ─────────────────────────────────────────────────────
   { id:"w11", n:11, dates:"7–13 Sep", phase:"Race-Specific", theme:"Gun Run Week — Mini Taper", targetKm:39, isRace:true, sessions:[
-    { id:"w11-mon", day:"MON", tag:"easy", title:"Easy Z2 Run", km:8, detail:"Mini taper begins. Controlled easy start to race week. Don't add volume.", paces:"6:20–7:00/km · ≤150bpm" },
-    { id:"w11-tue", day:"TUE", tag:"quality", title:"Short Sharpener + Light Leg PT", km:6, detail:"Run first. 1km easy warm-up → 2×1km @ threshold pace (4:42–4:52/km) with 2min jog recovery → 4×200m @ 10K effort (4:15–4:25/km) with 60sec walk recovery → 1km easy cool-down. Short and sharp — keeps legs awake before Sunday without creating fatigue. Light leg PT after.", paces:"Threshold: 4:42–4:52/km · 200m: 4:15–4:25/km" },
+    { id:"w11-mon", day:"MON", tag:"easy", title:"Easy Z2 Run", km:5, detail:"Mini taper begins. Controlled easy start to race week. Don't add volume.", paces:"6:20–7:00/km · ≤150bpm" },
+    { id:"w11-tue", day:"TUE", tag:"quality", title:"Short Sharpener + Light Leg PT", km:5, detail:"Run first. 1km easy warm-up → 2×1km @ threshold pace (4:42–4:52/km) with 2min jog recovery → 4×200m @ 10K effort (4:15–4:25/km) with 60sec walk recovery → 1km easy cool-down. Short and sharp — keeps legs awake before Sunday without creating fatigue. Light leg PT after.", paces:"Threshold: 4:42–4:52/km · 200m: 4:15–4:25/km" },
     { id:"w11-wed", day:"WED", tag:"easy", title:"Easy Z2 — Mini Taper", km:5, detail:"Volume dropping for Sunday race. Genuinely easy.", paces:"6:30–7:00/km · ≤148bpm" },
-    { id:"w11-thu", day:"THU", tag:"gym", title:"Run to PT — Light Upper Only", km:4, detail:"Easy short run + light upper body only. Zero leg work today.", paces:"6:30–7:00/km easy" },
-    { id:"w11-fri", day:"FRI", tag:"shake", title:"Shakeout + Strides", km:4, detail:"Short flat shakeout + 4×80m strides. Legs should feel sharp. Eat well and sleep early tonight.", paces:"6:45–7:15/km · 4 strides at race effort" },
+    { id:"w11-thu", day:"THU", tag:"rest", title:"Rest Day", km:null, detail:"Full rest. No running today. Use this day to finalise race logistics." },
+    { id:"w11-fri", day:"FRI", tag:"shake", title:"Shakeout + Strides", km:5, detail:"Short flat shakeout + 4×80m strides. Legs should feel sharp. Eat well and sleep early tonight.", paces:"6:45–7:15/km · 4 strides at race effort" },
     { id:"w11-sat", day:"SAT", tag:"rest", title:"Rest — Race Tomorrow", km:null, detail:"Full rest. Kit laid out. Confirm fuel plan. Race morning: carb breakfast 90min before start. Sleep early." },
-    { id:"w11-sun", day:"SUN", tag:"race", title:"OUTSURANCE GUN RUN — 21.1km", km:21.1, detail:"TARGET: Sub-1:42 PB. Follicular phase — good timing. Hilly course — run first 5km conservatively by HR not pace. Don't blow up on the climb. Fuel: gel at 25min and 50min. This is your marathon fitness checkpoint.", paces:"Target: sub-1:42 · First 5km: conservative by HR" },
+    { id:"w11-sun", day:"SUN", tag:"race", title:"OUTSURANCE GUN RUN — 21.1km", km:21.1, detail:"TARGET: Sub-1:40 PB. Stretch goal: 1:36–1:38. Follicular phase — good timing. Hilly course — run opening 4km at 4:40–4:50/km. Climb by HR (≤175bpm). Post-climb descent 4:30–4:40/km. Flat finish 4:33–4:40/km. Gel at 25min and 50min.", paces:"Target: sub-1:40 · Stretch: 1:36–1:38 · Climb: HR ≤175bpm" },
   ]},
   // ── POST GUN RUN ─────────────────────────────────────────────────────
   { id:"w12", n:12, dates:"14–20 Sep", phase:"Race-Specific", theme:"Post Gun Run — As It Comes", targetKm:58, sessions:[
@@ -354,15 +354,17 @@ export default function MarathonSkeleton() {
                     <div style={{fontSize:13,fontWeight:700,color:isDone?"#3a3a3c":"#fff",textDecoration:isDone?"line-through":"none",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap",letterSpacing:-0.2}}>{s.title}</div>
                     {s.paces&&!isOpen&&<div style={{fontSize:9,color:"#48484a",marginTop:1,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{s.paces}</div>}
                   </div>
-                  <div style={{flexShrink:0,textAlign:"right",minWidth:52}} onClick={e=>e.stopPropagation()}>
+                  <div style={{flexShrink:0,textAlign:"right",minWidth:64,padding:"4px 0"}}
+                    onClick={e=>{e.stopPropagation();if(isDone&&editKm!==s.id&&s.km!==null)setEditKm(s.id);}}>
                     {s.km!==null?(
                       isDone&&editKm===s.id?(
                         <input type="number" step=".1" autoFocus defaultValue={km[s.id]??s.km}
-                          onBlur={e=>{const v=parseFloat(e.target.value);setKm(k=>({...k,[s.id]:isNaN(v)?s.km!:v}));setEditKm(null);setDirty(true);}}
+                          onBlur={e=>{const v=parseFloat(e.target.value);setKm(k=>({...k,[s.id]:isNaN(v)?s.km!:v}));setEditKm(null);}}
                           onKeyDown={e=>{if(e.key==="Enter")(e.target as HTMLInputElement).blur();}}
+                          onClick={e=>e.stopPropagation()}
                           style={{width:48,fontSize:15,fontWeight:800,textAlign:"right",background:"transparent",border:"none",borderBottom:`1px solid ${meta.color}`,color:"#fff",outline:"none"}}/>
                       ):(
-                        <div onClick={()=>isDone&&setEditKm(s.id)} style={{cursor:isDone?"text":"default"}}>
+                        <div style={{cursor:isDone?"text":"default"}}>
                           <span style={{fontSize:20,fontWeight:800,color:isDone?"#30d158":"#fff",letterSpacing:-0.5}}>{isDone?(km[s.id]??s.km):s.km}</span>
                           <span style={{fontSize:10,color:isDone?"#30d158":"#555",marginLeft:1}}>km</span>
                         </div>
