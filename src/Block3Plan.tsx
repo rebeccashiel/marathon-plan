@@ -338,8 +338,8 @@ export default function Block3Plan() {
     });
   };
 
-  const wColor = week.isRace ? "#fa5400" : week.isDeload ? "#636366" : "#fa5400";
-  const phaseAccent = week.isRace ? "#fa5400" : "#fa5400";
+  const wColor = week.isRace ? "#fa5400" : week.isDeload ? "#636366" : "#30d158";
+  const phaseAccent = week.isRace ? "#fa5400" : "#30d158";
 
   return (
     <div style={{minHeight:"100vh",background:"#111",color:"#fff",fontFamily:"-apple-system,'Helvetica Neue',Arial,sans-serif",paddingBottom:80}}>
@@ -377,7 +377,7 @@ export default function Block3Plan() {
 
           {/* SAVE BUTTON */}
           <button onClick={doSave}
-            style={{width:"100%",padding:"12px",borderRadius:10,marginBottom:14,background:saveStatus==="err"?"#ff453a":saveStatus==="saved"?"#30d158":"#fa5400",border:"none",color:"#fff",fontSize:13,fontWeight:800,letterSpacing:0.5,cursor:"pointer"}}>
+            style={{width:"100%",padding:"12px",borderRadius:10,marginBottom:14,background:saveStatus==="err"?"#ff453a":saveStatus==="saved"?"#1a8040":"#30d158",border:"none",color:"#fff",fontSize:13,fontWeight:800,letterSpacing:0.5,cursor:"pointer"}}>
             {saveStatus==="saving"?"SAVING…":saveStatus==="err"?"⚠ SAVE FAILED — TAP TO RETRY":saveStatus==="saved"?"✓ SAVED":"SAVE CHANGES"}
           </button>
 
@@ -385,7 +385,7 @@ export default function Block3Plan() {
           <div style={{display:"flex",gap:6,paddingBottom:14}}>
             {WEEKS.map(w => {
               const active = w.id === activeW;
-              const col = w.isRace ? "#fa5400" : "#fa5400";
+              const col = w.isRace ? "#fa5400" : "#30d158";
               const done = w.sessions.filter(s=>completed[s.id]).length;
               const pct = Math.round((done/w.sessions.length)*100);
               return (
@@ -552,7 +552,7 @@ export default function Block3Plan() {
         {/* NAV */}
         <div style={{display:"flex",gap:8,marginTop:16}}>
           {week.n>9&&<button className="tap" onClick={()=>setActiveW(`w${week.n-1}`)} style={{flex:1,padding:"15px",borderRadius:12,background:"#1c1c1e",color:"#fff",fontSize:14,fontWeight:700,border:"1px solid #2c2c2e"}}>← Week {week.n-1}</button>}
-          {week.n<12&&<button className="tap" onClick={()=>setActiveW(`w${week.n+1}`)} style={{flex:1,padding:"15px",borderRadius:12,background:"#fa5400",color:"#fff",fontSize:14,fontWeight:700}}>Week {week.n+1} →</button>}
+          {week.n<12&&<button className="tap" onClick={()=>setActiveW(`w${week.n+1}`)} style={{flex:1,padding:"15px",borderRadius:12,background:"#30d158",color:"#fff",fontSize:14,fontWeight:700}}>Week {week.n+1} →</button>}
         </div>
 
         {/* ZONES */}
